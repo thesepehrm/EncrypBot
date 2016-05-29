@@ -47,6 +47,10 @@ try {
     {
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$str = $update->message->text;
+    	if(strpos($str,'/enc') {
+    		$str=substr($str,5,strlen($str)-4);
+    	}
+    	
 		$str_length = strlen($str);
 		for ($i = 0; $i < $str_length; $i++) {
 			$chcode=ord($str[$i]);
