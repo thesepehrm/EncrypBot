@@ -47,7 +47,7 @@ try {
     {
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$str = $update->message->text;
-    	if(strpos($str,'/enc') {
+    	if(strpos($str,'/enc') !== false) {
     		$str=substr($str,5,strlen($str)-4);
     	}
     	
