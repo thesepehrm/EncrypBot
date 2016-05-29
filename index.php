@@ -23,7 +23,6 @@ $client = new Zelenin\Telegram\Bot\Api('222942975:AAGV3w63SwXLZMoFa6rKnkYVrP5cIC
 $url = ''; // URL RSS feed
 $update = json_decode(file_get_contents('php://input'));
 
-//your app
 try {
 
     if($update->message->text == '/email')
@@ -31,7 +30,7 @@ try {
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$response = $client->sendMessage([
         	'chat_id' => $update->message->chat->id,
-        	'text' => "You can send email to : Kasra@madadipouya.com"
+        	'text' => "You can send email to : sepehr@mohammadi.io"
      	]);
     }
     else if($update->message->text == '/help')
@@ -44,29 +43,28 @@ try {
     		]);
 
     }
-    else if($update->message->text == '/latest')
-    {
-    		Feed::$cacheDir 	= __DIR__ . '/cache';
-			Feed::$cacheExpire 	= '5 hours';
-			$rss 		= Feed::loadRss($url);
-			$items 		= $rss->item;
-			$lastitem 	= $items[0];
-			$lastlink 	= $lastitem->link;
-			$lasttitle 	= $lastitem->title;
-			$message = $lasttitle . " \n ". $lastlink;
-			$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
-			$response = $client->sendMessage([
-					'chat_id' => $update->message->chat->id,
-					'text' => $message
-				]);
-
-    }
     else
     {
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
+    	$str = $update->message->text;
+		$str_length = strlen($str);
+		for ($i = 0; $i < $str_length; $i++) {
+			$chcode=ord($str[$i]);
+			
+			if ($chcode > 96 && $chcode < 123) {
+				$chcode = (($chcode-84)%26 + 97);
+			}
+			else if ($chcode > 64 && $chcode < 91) {
+				$chcode = (($chcode-52)%26 + 65);
+			}
+			else if ($chcode > 48 && $chcode < 58) {
+				$chcode = (($chcode-43)%10 + 48);
+    		}
+			$str[$i] = chr($chcode);
+		}
     	$response = $client->sendMessage([
     		'chat_id' => $update->message->chat->id,
-    		'text' => "Invalid command, please use /help to get list of available commands"
+    		'text' => $str
     		]);
     }
 
